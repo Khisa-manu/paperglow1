@@ -1,0 +1,12 @@
+{
+  "name": "paperglow",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "which php >/dev/null 2>&1 || (echo '' > /etc/apt/sources.list && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y -o Dpkg::Options::='--force-confdef' -o Dpkg::Options::='--force-confold' php-cli php-mbstring php-xml php-curl php-sqlite3 php-mysql php-zip unzip composer); php artisan serve --host=0.0.0.0 --port=3000",
+    "build": "php artisan config:clear && php artisan route:clear && php artisan view:clear",
+    "start": "php artisan serve --host=0.0.0.0 --port=3000",
+    "test": "php artisan test"
+  }
+}

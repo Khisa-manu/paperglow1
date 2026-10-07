@@ -1,0 +1,8 @@
+{
+  "name": "Paperglow — Business Applications & Custom Branding",
+  "description": "The unified platform bringing essential business applications and professional physical branding services together under one single Paperglow account.",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
