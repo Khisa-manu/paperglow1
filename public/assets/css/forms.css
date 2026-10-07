@@ -1,0 +1,316 @@
+/*
+ * Forms.
+ *
+ * Two jobs: style the theme's own contact form, and pull the common form
+ * plugins onto the theme's tokens so a form block does not look like a
+ * different website dropped into the page.
+ *
+ * The design's fields are plain: a hairline box, square corners, no fill, and
+ * a single outlined button beneath. Everything here is expressed in palette
+ * variables, so a form follows whichever colour variation a site has active.
+ */
+
+/* ---------------------------------------------------------------------------
+   Shared controls
+   ---------------------------------------------------------------------------
+   One selector list covers the theme's fields and every plugin's, so there is
+   one place to change how an input looks.
+*/
+
+.creative-agency-field__control,
+.wpcf7 input[type="text"],
+.wpcf7 input[type="email"],
+.wpcf7 input[type="tel"],
+.wpcf7 input[type="url"],
+.wpcf7 input[type="number"],
+.wpcf7 textarea,
+.wpcf7 select,
+.wpforms-field input[type="text"],
+.wpforms-field input[type="email"],
+.wpforms-field input[type="tel"],
+.wpforms-field textarea,
+.wpforms-field select,
+.gform_wrapper input[type="text"],
+.gform_wrapper input[type="email"],
+.gform_wrapper input[type="tel"],
+.gform_wrapper textarea,
+.gform_wrapper select,
+.fluentform input[type="text"],
+.fluentform input[type="email"],
+.fluentform textarea,
+.fluentform select,
+.forminator-input,
+.forminator-textarea,
+.nf-form-content input[type="text"],
+.nf-form-content input[type="email"],
+.nf-form-content textarea {
+	width: 100%;
+	/* Without this every control is wider than the cell it sits in: `width:
+	   100%` plus padding and a border on a content-box pushes the right-hand
+	   column of the grid out past its container. Form controls do not inherit
+	   a border-box reset from WordPress or from the theme, so they are told. */
+	box-sizing: border-box;
+	min-height: 3rem;
+	padding: 0.75rem 1.125rem;
+	font-family: inherit;
+	font-size: var(--wp--preset--font-size--small);
+	font-weight: 400;
+	line-height: 1.5;
+	color: var(--wp--preset--color--contrast);
+	background-color: transparent;
+	border: 1px solid var(--wp--preset--color--divider);
+	border-radius: 0;
+	box-shadow: none;
+	transition: border-color 0.2s ease;
+	-webkit-appearance: none;
+	appearance: none;
+}
+
+.creative-agency-field__control:focus,
+.wpcf7 input:focus,
+.wpcf7 textarea:focus,
+.wpforms-field input:focus,
+.wpforms-field textarea:focus,
+.gform_wrapper input:focus,
+.gform_wrapper textarea:focus,
+.fluentform input:focus,
+.fluentform textarea:focus,
+.forminator-input:focus,
+.forminator-textarea:focus {
+	border-color: var(--wp--preset--color--primary);
+	outline: 3px solid color-mix(in srgb, var(--wp--preset--color--accent) 35%, transparent);
+	outline-offset: 0;
+}
+
+textarea.creative-agency-field__control {
+	min-height: 9.5rem;
+	resize: vertical;
+}
+
+/* ---------------------------------------------------------------------------
+   Labels
+   --------------------------------------------------------------------------- */
+
+.creative-agency-field__label,
+.wpcf7 label,
+.wpforms-field-label,
+.gfield_label,
+.fluentform .ff-el-input--label label {
+	display: block;
+	margin-bottom: 0.4rem;
+	font-size: var(--wp--preset--font-size--small);
+	font-weight: 500;
+	color: var(--wp--preset--color--contrast);
+}
+
+.creative-agency-field__required {
+	color: var(--wp--preset--color--primary);
+}
+
+/* ---------------------------------------------------------------------------
+   The theme's contact form
+   --------------------------------------------------------------------------- */
+
+.creative-agency-contact {
+	margin: 0;
+}
+
+/*
+ * The anchor the POST redirect comes back to. In the flow but invisible, and
+ * it must not add height — an empty div with a margin would push the form
+ * down by whatever the block gap is. Offset so the sticky header does not
+ * cover the notice.
+ */
+.creative-agency-contact__anchor {
+	position: relative;
+	top: -120px;
+	display: block;
+	height: 0;
+	visibility: hidden;
+}
+
+/* The design's order: the message across the top, name and email side by
+   side, the subject across the bottom. */
+.creative-agency-contact__grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 1.5rem 1.875rem;
+}
+
+.creative-agency-contact__grid .creative-agency-field {
+	margin: 0;
+}
+
+.creative-agency-contact__grid .creative-agency-field--message,
+.creative-agency-contact__grid .creative-agency-field--subject {
+	grid-column: 1 / -1;
+}
+
+@media (max-width: 600px) {
+	.creative-agency-contact__grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+.creative-agency-contact__actions {
+	margin: 1.875rem 0 0;
+}
+
+/* The submit is the design's outlined button: a hairline pill that fills on
+   hover. */
+.creative-agency-contact__actions .wp-element-button {
+	cursor: pointer;
+	background-color: transparent;
+	color: var(--wp--preset--color--primary);
+	border: 1px solid var(--wp--preset--color--primary);
+}
+
+.creative-agency-contact__actions .wp-element-button:hover,
+.creative-agency-contact__actions .wp-element-button:focus-visible {
+	background-color: var(--wp--preset--color--primary);
+	color: var(--wp--preset--color--on-primary);
+}
+
+/* The honeypot. Off-screen rather than display:none, because some bots skip
+   anything that is display:none and fill everything else. */
+.creative-agency-contact__trap {
+	position: absolute;
+	left: -9999px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+.creative-agency-contact__notice {
+	margin: 0 0 1.4rem;
+	padding: 0.95rem 1.2rem;
+	border-left: 3px solid currentColor;
+	font-size: var(--wp--preset--font-size--small);
+	line-height: 1.6;
+	background-color: color-mix(in srgb, currentColor 7%, transparent);
+}
+
+.creative-agency-contact__notice.is-ok {
+	/* The words carry the message; the yellow bar marks it, the design's own
+	   accent. `contrast` text reads in every palette and both schemes, which a
+	   green text colour would not. */
+	color: var(--wp--preset--color--contrast);
+	border-left-color: var(--wp--preset--color--highlight);
+}
+
+.creative-agency-contact__notice.is-error {
+	color: var(--wp--preset--color--primary);
+}
+
+/* ---------------------------------------------------------------------------
+   Plugin submit buttons
+   ---------------------------------------------------------------------------
+   Each plugin ships its own button colours. Map them onto the theme's button
+   so a form's submit matches every other button on the site.
+*/
+
+.wpcf7 input[type="submit"],
+.wpforms-submit,
+.gform_button,
+.fluentform .ff-btn-submit,
+.forminator-button-submit,
+.nf-form-content .submit-wrap input {
+	font-family: inherit;
+	font-size: var(--wp--preset--font-size--small);
+	font-weight: 400;
+	line-height: 1.5;
+	padding: 1.0625rem 3.25rem;
+	color: var(--wp--preset--color--on-primary);
+	background-color: var(--wp--preset--color--primary);
+	border: 1px solid var(--wp--preset--color--primary);
+	border-radius: 30px;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+	width: auto;
+}
+
+.wpcf7 input[type="submit"]:hover,
+.wpforms-submit:hover,
+.gform_button:hover,
+.fluentform .ff-btn-submit:hover,
+.forminator-button-submit:hover {
+	background-color: var(--wp--preset--color--primary-deep);
+}
+
+/* ---------------------------------------------------------------------------
+   Plugin validation messages
+   --------------------------------------------------------------------------- */
+
+.wpcf7-not-valid-tip,
+.wpforms-error,
+.gfield_validation_message,
+.fluentform .error {
+	color: var(--wp--preset--color--primary);
+	font-size: var(--wp--preset--font-size--small);
+}
+
+.wpcf7 .wpcf7-response-output {
+	margin: 1.4rem 0 0;
+	padding: 0.95rem 1.2rem;
+	border: 0;
+	border-left: 3px solid currentColor;
+	font-size: var(--wp--preset--font-size--small);
+}
+
+/* ---------------------------------------------------------------------------
+   Core search and comments
+   --------------------------------------------------------------------------- */
+
+.wp-block-search__input {
+	box-sizing: border-box;
+	min-height: 3.125rem;
+	padding: 0.75rem 1.25rem;
+	font-size: var(--wp--preset--font-size--small);
+	border: 1px solid color-mix(in srgb, var(--wp--preset--color--secondary) 16%, var(--wp--preset--color--base));
+	border-radius: 0;
+	background-color: var(--wp--preset--color--base);
+	color: var(--wp--preset--color--contrast);
+}
+
+.wp-block-post-comments-form input[type="text"],
+.wp-block-post-comments-form input[type="email"],
+.wp-block-post-comments-form input[type="url"],
+.wp-block-post-comments-form textarea {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 0.75rem 1.125rem;
+	font-family: inherit;
+	font-size: var(--wp--preset--font-size--small);
+	color: var(--wp--preset--color--contrast);
+	background-color: transparent;
+	border: 1px solid var(--wp--preset--color--divider);
+	border-radius: 5px;
+}
+
+.wp-block-post-comments-form textarea {
+	border-radius: 12px;
+}
+
+.wp-block-post-comments-form label {
+	font-size: var(--wp--preset--font-size--small);
+	font-weight: 500;
+	color: var(--wp--preset--color--contrast);
+}
+
+/* The comment form's submit: the same outlined pill as the contact form. */
+.wp-block-post-comments-form .wp-block-button__link,
+.wp-block-post-comments-form input[type="submit"] {
+	background-color: transparent;
+	color: var(--wp--preset--color--primary);
+	border: 1px solid var(--wp--preset--color--primary);
+	border-radius: 30px;
+	padding: 1.0625rem 3.25rem;
+	font-size: var(--wp--preset--font-size--small);
+	cursor: pointer;
+}
+
+.wp-block-post-comments-form .wp-block-button__link:hover,
+.wp-block-post-comments-form input[type="submit"]:hover {
+	background-color: var(--wp--preset--color--primary);
+	color: var(--wp--preset--color--on-primary);
+}
